@@ -15,6 +15,7 @@ class PTask:
         self.fi = fi
         self.d = d if d is not None else p
         self.u = self.e / self.p
+        self.xi = np.log2(self.p) - np.floor(np.log2(self.p))
 
     def __eq__(self, __o: object) -> bool:
         if self.p == __o.p and self.e == __o.e and self.fi == __o.fi and self.d == __o.d:
