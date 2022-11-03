@@ -13,6 +13,7 @@ class TaskSet:
         self.taskset = Tasks
         self.urm = len(self.taskset) * (np.power(2, 1/len(self.taskset)) - 1)
         self.u = np.sum([task.u for task in self.taskset])
+        self.zeta = np.max([task.xi for task in self.taskset]) - np.min([task.xi for task in self.taskset])
         
     def __len__(self) -> int:
         return len(self.taskset)
@@ -114,13 +115,19 @@ class TaskSet:
         
             bool: True if hyperbolic bound of task set < 2
         """
-        pass
+        hb = 1
+        for task in self.taskset:
+            hb *= (task.u + 1)
+        
+        return hb <= 2
     
     def burchard_test(self):
         """
         Burchard Test
         """
-        pass
+        
+        U = (n - 1) * (np.power(2, self.zeta/(n-1)) - 1) + np.power(2, 1-self.zeta) - 1
+        return self.u <= U
     
     def sr_test(self, stop: bool = False):
         """
