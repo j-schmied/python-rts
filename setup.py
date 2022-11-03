@@ -13,6 +13,5 @@ setup(name="python-rts",
       install_requires=[
             "numpy"
       ],
-      packages=["rts"],
       zip_safe=False
 )
