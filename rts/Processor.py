@@ -174,6 +174,30 @@ class Processor:
             bool -> True if scheduling was successful
         """
         self.reset()
+        
+        i = 0  # Taskindex
+        j = 0  # Processorindex
+        n = len(T)
+        T = T.taskset
+        
+        while i < n:
+            j += 1
+            self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+            self.core_dict[f"C{j}"]['u'] = T[i].u
+            zeta = 0
+            xmin = T[i].xi
+            
+            while exit != 1:
+                i += 1
+                zeta = T[i].xi - xmin
+                
+                if T[i] + self.core_dict[f"C{j}"]['u'] <= np.max(np.ln(2), 1 - zeta*np.ln(2)):
+                    self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+                    self.core_dict[f"C{j}"]['u'] += T[i].u
+                    continue
+                
+                exit = 1 
+        
         return True
     
     def rmgt(self, T) -> bool:
