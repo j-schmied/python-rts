@@ -156,6 +156,8 @@ class Processor:
                 return False
                 
             self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+            self.core_dict[f"C{j}"]['u'] += T[i].u
+            self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
             
             if j > N:
                 N = j
@@ -203,6 +205,7 @@ class Processor:
                 if T[i].u + self.core_dict[f"C{j}"]['u'] <= numpy.max([numpy.log(2), 1 - zeta*numpy.log(2)]):
                     self.core_dict[f"C{j}"]["Tasks"].append(T[i])
                     self.core_dict[f"C{j}"]['u'] += T[i].u
+                    self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
                     continue
                 
                 ex = 1
