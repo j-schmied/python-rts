@@ -36,6 +36,20 @@ class TaskSet:
                 
         return t_pmin
         
+    def is_simple_periodic(self) -> bool:
+    	T = self
+    	T = T.sort(key="p")
+    	T = T.taskset
+    	
+    	factor = T[1].p / T[0].p
+    	
+    	for i in range(1, len(T)):
+    		f = T[i-1].p * factor
+    		if f != T[i].p:
+    			return False
+    	
+    	return True
+        
     def sort(self, key: str, desc: bool = False):
         """
         Sort task set by key
@@ -149,6 +163,7 @@ class TaskSet:
         for task in self.taskset:
             hb *= (task.u + 1)
         
+        print(f"Hyp. Bd. = {hb}")
         return hb <= 2
     
     def burchard_test(self):
@@ -157,6 +172,9 @@ class TaskSet:
         """
         n = len(self)
         U = (n - 1) * (numpy.power(2, self.zeta/(n-1)) - 1) + numpy.power(2, 1-self.zeta) - 1
+        
+        print(f"U(n, zeta) = {U}")
+        
         return self.u <= U
     
     def sr_test(self, stop: bool = False):
