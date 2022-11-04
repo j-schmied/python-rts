@@ -2,6 +2,8 @@
 
 This library provides various functions for real time systems related calculations.
 
+NOTE: currently under development. Not all functions are implemented yet. PR's/improvements welcome!
+
 ## Content
 
 ### Types
@@ -40,7 +42,8 @@ For Earliest Deadline First Scheduling (EDF):
 
 ## Usage
 
-* Install: `pip install git+https://github.com/j-schmied/python-rts.git`* Usage: see `rts.ipynb` (Note: Notebook also uses `pandas` and `plotly`)
+* Install: `pip install git+https://github.com/j-schmied/python-rts.git`
+* Usage: see `rts.ipynb` (Note: Notebook also uses `pandas` and `plotly`)
 
 ## Sources
 
