@@ -136,6 +136,9 @@ class Processor:
         
         i = 0  # Taskindex
         N = 1  # Processor count
+        
+        T = T.sort_by_u()
+        
         n = len(T)
         T = T.taskset
         

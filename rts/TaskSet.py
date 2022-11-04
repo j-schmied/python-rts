@@ -33,6 +33,24 @@ class TaskSet:
                 
         return t_pmin
         
+    def sort_by_u(self):
+        Ttemp = self
+        
+        sorted = False
+        
+        while not sorted:
+            i = 0
+            n = len(self)
+            
+            for i in range(n):
+                if Ttemp[i].u < Ttemp[i+1].u and i+1 < n:
+                    Ttemp[i], Ttemp[i+1] = Ttemp[i+1], Ttemp[i]
+                    continue
+            
+            sorted = True
+            
+        return Ttemp    
+        
     def sort_by_xi(self):
         Ttemp = self
         
