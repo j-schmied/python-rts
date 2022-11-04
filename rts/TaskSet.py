@@ -53,6 +53,16 @@ class TaskSet:
         Ttemp.taskset = sorted(self.taskset, key=lambda i: getattr(i, key), reverse=desc)
         return Ttemp
     
+    def add_task(self, T):
+        """
+        Add task to task set
+        
+        Parameters:
+        
+            T: PTask -> task to add
+        """
+        self.taskset.append(T)
+    
     ### RMS Tests
     def ll_test(self) -> bool:
         """
