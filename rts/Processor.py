@@ -177,6 +177,9 @@ class Processor:
         
         i = 0  # Taskindex
         j = 0  # Processorindex
+        
+        T = T.sort_by_xi()
+        
         n = len(T)
         T = T.taskset
         

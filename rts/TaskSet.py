@@ -32,6 +32,24 @@ class TaskSet:
                 t_pmin = task
                 
         return t_pmin
+        
+    def sort_by_xi(self):
+        Ttemp = self
+        
+        sorted = False
+        
+        while not sorted:
+            i = 0
+            n = len(self)
+            
+            for i in range(n):
+                if Ttemp[i].xi > Ttemp[i+1].xi and i+1 < n:
+                    Ttemp[i], Ttemp[i+1] = Ttemp[i+1], Ttemp[i]
+                    continue
+                
+                sorted = True 
+                    
+        return Ttemp 
     
     ### RMS Tests
     def ll_test(self) -> bool:
