@@ -1,3 +1,5 @@
+import numpy
+
 class PTask:
     """
     Periodic Task
@@ -8,6 +10,11 @@ class PTask:
         e:  Execution Time
         fi: Phase (mostly 0)
         d:  (relative) Deadline (mostly p)
+        
+    Attributes:
+    
+        u:  Utilization (e/p)
+        xi: ld(p) - floor(ld(p))
     """
     def __init__(self, p: float, e: float, fi: float = 0.0, d: float = None):
         self.p = p
@@ -15,7 +22,7 @@ class PTask:
         self.fi = fi
         self.d = d if d is not None else p
         self.u = self.e / self.p
-        self.xi = np.log2(self.p) - np.floor(np.log2(self.p))
+        self.xi = numpy.log2(self.p) - numpy.floor(numpy.log2(self.p))
 
     def __eq__(self, __o: object) -> bool:
         if self.p == __o.p and self.e == __o.e and self.fi == __o.fi and self.d == __o.d:
@@ -26,4 +33,4 @@ class PTask:
         return f"T({self.p},{self.e})"
     
     def __repr__(self) -> str:
-        return f"T({self.p},{self.e})" 
+        return f"T({self.p},{self.e})"
