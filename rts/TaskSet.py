@@ -1,4 +1,4 @@
-import numpy as np
+import numpy 
 
 
 class TaskSet:
@@ -11,9 +11,9 @@ class TaskSet:
     """
     def __init__(self, *Tasks):
         self.taskset = Tasks
-        self.urm = len(self.taskset) * (np.power(2, 1/len(self.taskset)) - 1)
-        self.u = np.sum([task.u for task in self.taskset])
-        self.zeta = np.max([task.xi for task in self.taskset]) - np.min([task.xi for task in self.taskset])
+        self.urm = len(self.taskset) * (numpy.power(2, 1/len(self.taskset)) - 1)
+        self.u = numpy.sum([task.u for task in self.taskset])
+        self.zeta = numpy.max([task.xi for task in self.taskset]) - numpy.min([task.xi for task in self.taskset])
         
     def __len__(self) -> int:
         return len(self.taskset)
@@ -25,6 +25,9 @@ class TaskSet:
         return f"{[task for task in self.taskset]}"
     
     def get_min_priority_task(self):
+        """
+        Returns task with the least priority (task with maximum period)
+        """
         t_pmin = None
         
         for task in self.taskset:
@@ -33,41 +36,22 @@ class TaskSet:
                 
         return t_pmin
         
-    def sort_by_u(self):
+    def sort(self, key: str, desc: bool = False):
+        """
+        Sort task set by key
+        
+        Parameters:
+        
+            key: str    -> key that should be used for sorting
+            desc: bool  -> sort descending, False by default
+            
+        Returns:
+        
+            TaskSet: with self.taskset sorted by key
+        """
         Ttemp = self
-        
-        sorted = False
-        
-        while not sorted:
-            i = 0
-            n = len(self)
-            
-            for i in range(n):
-                if Ttemp[i].u < Ttemp[i+1].u and i+1 < n:
-                    Ttemp[i], Ttemp[i+1] = Ttemp[i+1], Ttemp[i]
-                    continue
-            
-            sorted = True
-            
-        return Ttemp    
-        
-    def sort_by_xi(self):
-        Ttemp = self
-        
-        sorted = False
-        
-        while not sorted:
-            i = 0
-            n = len(self)
-            
-            for i in range(n):
-                if Ttemp[i].xi > Ttemp[i+1].xi and i+1 < n:
-                    Ttemp[i], Ttemp[i+1] = Ttemp[i+1], Ttemp[i]
-                    continue
-                
-                sorted = True 
-                    
-        return Ttemp 
+        Ttemp.taskset = sorted(self.taskset, key=lambda i: getattr(i, key), reverse=desc)
+        return Ttemp
     
     ### RMS Tests
     def ll_test(self) -> bool:
@@ -124,7 +108,7 @@ class TaskSet:
             for task in self.taskset:
                 if task == t_pmin:
                     continue
-                tl2 += (np.ceil(tls[k-1]/task.p) * task.e)
+                tl2 += (numpy.ceil(tls[k-1]/task.p) * task.e)
             tl_ges = tl1 + tl2
             tls.append(tl_ges)
             
@@ -161,8 +145,8 @@ class TaskSet:
         """
         Burchard Test
         """
-        
-        U = (n - 1) * (np.power(2, self.zeta/(n-1)) - 1) + np.power(2, 1-self.zeta) - 1
+        n = len(self)
+        U = (n - 1) * (numpy.power(2, self.zeta/(n-1)) - 1) + numpy.power(2, 1-self.zeta) - 1
         return self.u <= U
     
     def sr_test(self, stop: bool = False):
@@ -192,20 +176,20 @@ class TaskSet:
         while i < n:
             res[f"T{i}"] = dict()
             tpi = T[i].p
-            tbi = tpi / 2 ** np.ceil(np.log2(tpi/tpmin))
+            tbi = tpi / 2 ** numpy.ceil(numpy.log2(tpi/tpmin))
             res[f"T{i}"]["tbi"] = tbi
             j = 0
             tpjs = list()
             
             while j < n:
                 tpj = T[j].p
-                tpj = tbi * 2 ** np.floor(np.log2(tpj/tbi))
+                tpj = tbi * 2 ** numpy.floor(numpy.log2(tpj/tbi))
                 tpjs.append(tpj)
                 j += 1    
                 
             # Calculate usage
             res[f"T{i}"]["p_mod"] = tpjs
-            u = np.sum([task.e / tpjs[j] for j, task in enumerate(T)])
+            u = numpy.sum([task.e / tpjs[j] for j, task in enumerate(T)])
             res[f"T{i}"]["u"] = u
             res[f"T{i}"]["u < 1"] = u < 1
             
