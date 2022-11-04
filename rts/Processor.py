@@ -1,4 +1,4 @@
-import numpy as np
+import numpy
 
 
 class Processor:
@@ -64,12 +64,12 @@ class Processor:
             if j > self.core_count:
                 return False
             
-            t_urm = (len(self.core_dict[f"C{j}"]["Tasks"])+1) * (np.power(2, 1/(len(self.core_dict[f"C{j}"]["Tasks"])+1)) - 1) 
+            t_urm = (len(self.core_dict[f"C{j}"]["Tasks"])+1) * (numpy.power(2, 1/(len(self.core_dict[f"C{j}"]["Tasks"])+1)) - 1) 
             
             if self.core_dict[f"C{j}"]['u'] + (T[i].u) < t_urm:
                 self.core_dict[f"C{j}"]["Tasks"].append(T[i])
                 self.core_dict[f"C{j}"]['u'] += T[i].u
-                self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (np.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
             else:
                 self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
                 j += 1
@@ -101,7 +101,7 @@ class Processor:
         while i < n:
             j = 1
 
-            t_urm = (len(self.core_dict[f"C{j}"]["Tasks"])+1) * (np.power(2, 1/(len(self.core_dict[f"C{j}"]["Tasks"])+1)) - 1) 
+            t_urm = (len(self.core_dict[f"C{j}"]["Tasks"])+1) * (numpy.power(2, 1/(len(self.core_dict[f"C{j}"]["Tasks"])+1)) - 1) 
             
             while self.core_dict[f"C{j}"]['u'] + (T[i].u) > t_urm:
                 j += 1
@@ -111,7 +111,7 @@ class Processor:
                 
             self.core_dict[f"C{j}"]["Tasks"].append(T[i])
             self.core_dict[f"C{j}"]['u'] += T[i].u
-            self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (np.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+            self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
             
             if j > N:
                 N = j
@@ -136,9 +136,7 @@ class Processor:
         
         i = 0  # Taskindex
         N = 1  # Processor count
-        
-        T = T.sort_by_u()
-        
+        T = T.sort(key='u', desc=False)
         n = len(T)
         T = T.taskset
         
@@ -146,7 +144,7 @@ class Processor:
             j = 1  # Processorindex
             
             m_hb = 1
-            for task in self.core_dict[f"C{j}"]["Tasks"]
+            for task in self.core_dict[f"C{j}"]["Tasks"]:
                 m_hb *= (task.u + 1)
         
             while T[i].u > (2/m_hb - 1):
@@ -180,9 +178,7 @@ class Processor:
         
         i = 0  # Taskindex
         j = 0  # Processorindex
-        
-        T = T.sort_by_xi()
-        
+        T = T.sort(key="xi")
         n = len(T)
         T = T.taskset
         
@@ -197,7 +193,7 @@ class Processor:
                 i += 1
                 zeta = T[i].xi - xmin
                 
-                if T[i] + self.core_dict[f"C{j}"]['u'] <= np.max(np.ln(2), 1 - zeta*np.ln(2)):
+                if T[i] + self.core_dict[f"C{j}"]['u'] <= numpy.max(numpy.ln(2), 1 - zeta*numpy.ln(2)):
                     self.core_dict[f"C{j}"]["Tasks"].append(T[i])
                     self.core_dict[f"C{j}"]['u'] += T[i].u
                     continue
