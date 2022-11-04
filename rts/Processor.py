@@ -56,22 +56,22 @@ class Processor:
         self.reset()
         
         i = 0  # Taskindex
-        j = 0  # Processorindex
+        j = 1  # Processorindex
         n = len(T)
         T = T.taskset
         
         while i < n:
-            if j+1 > self.core_count:
+            if j > self.core_count:
                 return False
             
-            t_urm = (len(self.core_dict[f"C{j+1}"]["Tasks"])+1) * (np.power(2, 1/(len(self.core_dict[f"C{j+1}"]["Tasks"])+1)) - 1) 
+            t_urm = (len(self.core_dict[f"C{j}"]["Tasks"])+1) * (np.power(2, 1/(len(self.core_dict[f"C{j}"]["Tasks"])+1)) - 1) 
             
-            if self.core_dict[f"C{j+1}"]['u'] + (T[i].u) < t_urm:
-                self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
-                self.core_dict[f"C{j+1}"]['u'] += T[i].u
-                self.core_dict[f"C{j+1}"]["urm"] = len(self.core_dict[f"C{j+1}"]["Tasks"]) * (np.power(2, 1/len(self.core_dict[f"C{j+1}"]["Tasks"])) - 1)
+            if self.core_dict[f"C{j}"]['u'] + (T[i].u) < t_urm:
+                self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+                self.core_dict[f"C{j}"]['u'] += T[i].u
+                self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (np.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
             else:
-                self.core_dict[f"C{j+2}"]["Tasks"].append(T[i])
+                self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
                 j += 1
             
             i += 1
@@ -99,22 +99,22 @@ class Processor:
         T = T.taskset
         
         while i < n:
-            j = 0
-            
-            if j+1 > self.core_count:
-                return False
+            j = 1
 
-            t_urm = (len(self.core_dict[f"C{j+1}"]["Tasks"])+1) * (np.power(2, 1/(len(self.core_dict[f"C{j+1}"]["Tasks"])+1)) - 1) 
+            t_urm = (len(self.core_dict[f"C{j}"]["Tasks"])+1) * (np.power(2, 1/(len(self.core_dict[f"C{j}"]["Tasks"])+1)) - 1) 
             
-            while self.core_dict[f"C{j+1}"]['u'] + (T[i].u) > t_urm:
+            while self.core_dict[f"C{j}"]['u'] + (T[i].u) > t_urm:
                 j += 1
                 
-            self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
-            self.core_dict[f"C{j+1}"]['u'] += T[i].u
-            self.core_dict[f"C{j+1}"]["urm"] = len(self.core_dict[f"C{j+1}"]["Tasks"]) * (np.power(2, 1/len(self.core_dict[f"C{j+1}"]["Tasks"])) - 1)
+            if j > self.core_count:
+                return False 
+                
+            self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+            self.core_dict[f"C{j}"]['u'] += T[i].u
+            self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (np.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
             
-            if j+1 > N:
-                N = j+1
+            if j > N:
+                N = j
             
             i += 1 
             
@@ -133,6 +133,32 @@ class Processor:
             bool -> True if scheduling was successful
         """
         self.reset()
+        
+        i = 0  # Taskindex
+        N = 1  # Processor count
+        n = len(T)
+        T = T.taskset
+        
+        while i < n:
+            j = 1  # Processorindex
+            
+            m_hb = 1
+            for task in self.core_dict[f"C{j}"]["Tasks"]
+                m_hb *= (task.u + 1)
+        
+            while T[i].u > (2/m_hb - 1):
+                j += 1
+                
+            if j > self.core_count:
+                return False
+                
+            self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+            
+            if j > N:
+                N = j
+                
+            i += 1 
+        
         return True
     
     def rmst(self, T) -> bool:
@@ -153,6 +179,8 @@ class Processor:
     def rmgt(self, T) -> bool:
         """
         Rate Monotonous General Task Scheduling
+        Using RMST for u <= 1/3
+        Using RMFF for u > 1/3
         
         Parameters:
         
