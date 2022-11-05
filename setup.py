@@ -1,8 +1,13 @@
 from distutils.core import setup
 from setuptools import find_packages
 
+try:
+      from Module.version import __version__
+except ModuleNotFoundError:
+      exec(open("Module/version.py").read())
+
 setup(name="python-rts", 
-      version="0.1",
+      version=__version__,
       packages=find_packages(),
       package_data={p: ['*'] for p in find_packages()},
       description="A package for Real Time Systems calculations", 
