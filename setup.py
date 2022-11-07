@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 try:
-      from Module.version import __version__
+      from version import __version__
 except ModuleNotFoundError:
       exec(open("Module/version.py").read())
 
