@@ -14,6 +14,7 @@ def main():
     sline = '-' * 50
 
     def test(r): return f"Test success: {r}"
+    def stest(r): return "Result: Task set is schedulable" if r else "Result: Task set is not schedulable"
 
     print(sline)
     print("UP Scheduling Tests")
@@ -24,23 +25,23 @@ def main():
     if T.is_simple_periodic():
         print("[RMS] u < 1 Test")
         ult1t = T.ult1_test()
-        print(test(ult1t))
+        print(stest(ult1t))
         print(line)
     print("[RMS] Liu-Layland-Test")
     llt = T.ll_test()
-    print(test(llt))
+    print(stest(llt))
     print(line)
     print("[RMS] RMA Test")
     rmat = T.rma_test()
-    print(test(rmat))
+    print(stest(rmat))
     print(line)
     print("[RMS] Hyperbolic Bound")
     hb = T.hyperbolic_bound()
-    print(test(hb))
+    print(stest(hb))
     print(line)
     print("[RMS] Burchard Test")
     bt = T.burchard_test()
-    print(test(bt))
+    print(stest(bt))
     print(line)
     print("[RMS] SR-Test")
     srt_df = pd.DataFrame(T.sr_test()).T
@@ -48,7 +49,7 @@ def main():
     print(line)
     print("[EDF] u < 1 Test")
     ult1t = T.ult1_test()
-    print(test(ult1t))
+    print(stest(ult1t))
     print('\n')
     
     print(sline)
