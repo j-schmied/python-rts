@@ -101,7 +101,6 @@ class Processor:
         N = 1
         i = 0
         n = len(T)
-        urm = T.urm
         T = T.taskset
         
         while i < n:
@@ -317,6 +316,30 @@ class Processor:
             bool -> True if scheduling was successful
         """
         self.reset()
+
+        N = 1
+        i = 0
+        n = len(T)
+        T = T.taskset
+
+        while i < n:
+            j = 1
+
+            while self.core_dict[f"C{j}"]['u'] + (T[i].u) > 1:
+                j += 1
+
+                if j > self.core_count:
+                    return False
+
+            self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+            self.core_dict[f"C{j}"]['u'] += T[i].u
+            self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+
+            if j > N:
+                N = j
+
+            i += 1
+
         return True
     
     def edfbf(self, T) -> bool:
