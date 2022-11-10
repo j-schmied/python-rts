@@ -352,11 +352,14 @@ class Processor:
         m = self.core_count
         
         for task in T.taskset:
-            task.pke = (m-1*numpy.sqrt(5*m**2-6*m+1)/(2*m))
+            task.pke = task.p - (m-1*numpy.sqrt(5*m**2-6*m+1)/(2*m)) * task.e
             
         T = T.sort('pke')
         
         Us = ((2*m)/(3*m-1+numpy.sqrt(5*m**2-6*m+1)))
+        
+        print(f"Task set ordered by k = {T}")
+        print(f"Us = {Us}")
         
         return T.u < Us
     
