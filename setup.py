@@ -2,9 +2,9 @@ from distutils.core import setup
 from setuptools import find_packages
 
 try:
-      from version import __version__
+      from rts.version import __version__
 except ModuleNotFoundError:
-      exec(open("Module/version.py").read())
+      exec(open("rts/version.py").read())
 
 setup(name="python-rts", 
       version=__version__,
