@@ -7,8 +7,8 @@ from rts.TaskSet import *
 
 
 def main():
-    T = TaskSet(PTask(4, 1), PTask(8, 3), PTask(32, 4), PTask(16, 3))
-    CPU = Processor(8)
+    T = TaskSet(PTask(7, 2), PTask(21, 3), PTask(29, 9), PTask(49,15), PTask(64, 20), PTask(66, 16), PTask(160, 32), PTask(235, 72), PTask(260, 25), PTask(450, 120))
+    CPU = Processor(4)
 
     line = '\n' + '-' * 50 + '\n'
     sline = '-' * 50
@@ -79,6 +79,67 @@ def main():
     rmst_df = pd.DataFrame(CPU.get_partitioning()).T
     print(rmst_df)
     print(test(rmstt))
+    print(line)
+    # print("RM General Task")
+    # rmgtt = CPU.rmgt(T)
+    # rmgt_df = pd.DataFrame(CPU.get_partitioning()).T
+    # print(rmgt_df)
+    # print(test(rmgtt))
+    # print(line)
+    # print("RM Best Fit")
+    # rmbft = CPU.rmbf(T)
+    # rmbf_df = pd.DataFrame(CPU.get_partitioning()).T
+    # print(rmbf_df)
+    # print(test(rmbft))
+    # print(line)
+    # print("RM Worst Fit")
+    # rmwft = CPU.rmwf(T)
+    # rmwf_df = pd.DataFrame(CPU.get_partitioning()).T
+    # print(rmwf_df)
+    # print(test(rmwft))
+    # print(line)
+    print("EDF Next Fit")
+    edfnft = CPU.edfnf(T)
+    edfnf_df = pd.DataFrame(CPU.get_partitioning()).T
+    print(edfnf_df)
+    print(test(edfnft))
+    # print(line)
+    # print("EDF First Fit")
+    # edffft = CPU.edfff(T)
+    # edfff_df = pd.DataFrame(CPU.get_partitioning()).T
+    # print(edfff_df)
+    # print(test(edffft))
+    # print(line)
+    # print("EDF Best Fit")
+    # edfbft = CPU.edfbf(T)
+    # edfbf_df = pd.DataFrame(CPU.get_partitioning()).T
+    # print(edfbf_df)
+    # print(test(edfbft))
+    print('\n')
+
+    print(sline)
+    print("MP Global Procedures")
+    print(sline)
+    print('\n')
+    print("Adaptive TkC")
+    atkct = CPU.adaptive_tkc(T)
+    print(test(atkct))
+    print(line)
+    print("RM Utilization Separation")
+    rmust = CPU.rmus(T)
+    print(test(rmust))
+    print(line)
+    print("Global EDF")
+    gedft = CPU.global_edf(T)
+    print(test(gedft))
+    print(line)
+    print("EDF Utilization Separation")
+    edfust = CPU.edfus(T)
+    print(test(edfust))
+    print(line)
+    print("fpEDF")
+    fpedft = CPU.fpedf(T)
+    print(test(fpedft))
     print('\n')
 
 
