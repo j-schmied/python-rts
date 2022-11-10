@@ -14,7 +14,7 @@ NOTE: currently under development. Not all functions are implemented yet. PR's/i
 
 ### Procedures
 
-For Rate Monotonus Scheduling (RMS):
+For Rate Monotonic Scheduling (RMS):
 
 * Scheduling Tests:
     * Liu-Layland Test
@@ -23,13 +23,13 @@ For Rate Monotonus Scheduling (RMS):
     * Burchard Test
     * SR Test
 * Partitioning Procedures:
-    * Rate Monotonous Next Fit
-    * Rate Monotonous First Fit
-    * Rate Monotonous First Fit with Decreasing Utilization
-    * Rate Monotonous Small Task
-    * Rate Monotonous General Task (TbA)
-    * Rate Monotonous Best Fit (TbA)
-    * Rate Monotonous Worst Fit (TbA)
+    * Rate Monotonic Next Fit
+    * Rate Monotonic First Fit
+    * Rate Monotonic First Fit with Decreasing Utilization
+    * Rate Monotonic Small Task
+    * Rate Monotonic General Task (TbA)
+    * Rate Monotonic Best Fit (TbA)
+    * Rate Monotonic Worst Fit (TbA)
 
 For Earliest Deadline First Scheduling (EDF):
 
