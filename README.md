@@ -17,28 +17,35 @@ NOTE: currently under development. Not all functions are implemented yet. PR's/i
 For Rate Monotonic Scheduling (RMS):
 
 * Scheduling Tests:
-    * Liu-Layland Test
-    * Rate Monotonous Analysis
-    * Hyperbolic Bound
-    * Burchard Test
-    * SR Test
+  * Liu-Layland Test
+  * Rate Monotonous Analysis
+  * Hyperbolic Bound
+  * Burchard Test
+  * SR Test
 * Partitioning Procedures:
-    * Rate Monotonic Next Fit
-    * Rate Monotonic First Fit
-    * Rate Monotonic First Fit with Decreasing Utilization
-    * Rate Monotonic Small Task
-    * Rate Monotonic General Task (TbA)
-    * Rate Monotonic Best Fit (TbA)
-    * Rate Monotonic Worst Fit (TbA)
+  * RM Next Fit
+  * RM First Fit
+  * RM First Fit with Decreasing Utilization
+  * RM Small Task
+  * RM General Task (TbA)
+  * RM Best Fit (TbA)
+  * RM Worst Fit (TbA)
+* Global Procedures:
+  * Adaptive TkC
+  * RM Utilization Separation
 
 For Earliest Deadline First Scheduling (EDF):
 
 * Scheduling Tests:
-    * u < 1 Test 
+  * u < 1 Test
 * Partitioning Procedures:
-    * Earliest Deadline First Next Fit
-    * Earliest Deadline First First Fit (TbA)
-    * Earliest Deadline First Best Fit (TbA)
+  * EDF Next Fit
+  * EDF First Fit (TbA)
+  * EDF Best Fit (TbA)
+* Global Procedures:
+  * Global EDF
+  * EDF Utilization Separation
+  * fpEDF
 
 ### Comparison
 
@@ -53,20 +60,18 @@ For Earliest Deadline First Scheduling (EDF):
 |EDFFF|u<1|O(nlogn)|1.7|
 |EDFBF|u<1|O(nlogn)|1.7|
 
-
 ## Usage
 
 * Install: `pip install git+https://github.com/j-schmied/python-rts.git`
 * Usage:
-   * `rts.ipynb` (Note: Notebook also uses `pandas` and `plotly`)
-   * `rts.py` -> adapt task set on top and run script
+  * `rts.ipynb` (Note: Notebook also uses `pandas` and `plotly`)
+  * `rts.py` -> adapt task set on top and run script
 
 ## Sources
 
 * Jane W. S. Liu. “Real-Time Systems“
-* Sudarshan K. Dhall und C. L. Liu. “On a Real-Time Scheduling Problem”     
+* Sudarshan K. Dhall und C. L. Liu. “On a Real-Time Scheduling Problem”
 * Ching-Chih Han und Hung-ying Tyan. “A Better Polynomial-Time Schedulability Test for Real-Time Fixed-Priority Scheduling Algorithms”
 * Almut Burchard u. a. “Assigning Real-Time Tasks to Homogeneous Multiprocessor Systems”
 * Tei-Wei Kuo und Aloysius K. Mok. “Load Adjustment in Adaptive Real-Time Systems”
 * C. L. Liu und James W. Layland. “Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment”
- 
