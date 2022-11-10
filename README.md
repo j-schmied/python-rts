@@ -36,9 +36,23 @@ For Earliest Deadline First Scheduling (EDF):
 * Scheduling Tests:
     * u < 1 Test 
 * Partitioning Procedures:
-    * Earliest Deadline First Next Fit (TbA)
+    * Earliest Deadline First Next Fit
     * Earliest Deadline First First Fit (TbA)
     * Earliest Deadline First Best Fit (TbA)
+
+### Comparison
+
+| Procedure | Test | Complexity | N/N0 |
+|:----------|:-----|-----------:|-----:|
+|RMNF|LL|O(n)|2.67|
+|RMFF|LL|O(nlogn)|2.23|
+|RMBF|LL|O(nlogn)|2.23|
+|RMFFDU|Hyp. Bd.|O(nlogn)|1.66|
+|RMST|Burch.|O(nlogn)|1/(1-max ui)|
+|EDFNF|u<1|O(n)|?|
+|EDFFF|u<1|O(nlogn)|1.7|
+|EDFBF|u<1|O(nlogn)|1.7|
+
 
 ## Usage
 
