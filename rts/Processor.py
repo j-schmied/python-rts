@@ -72,6 +72,8 @@ class Processor:
                 self.core_dict[f"C{j}"]['u'] += T[i].u
                 self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
             else:
+                if j + 1 > self.core_count:
+                    return False
                 self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
                 j += 1
             
@@ -107,8 +109,8 @@ class Processor:
             while self.core_dict[f"C{j}"]['u'] + (T[i].u) > t_urm:
                 j += 1
                 
-            if j > self.core_count:
-                return False 
+                if j > self.core_count:
+                    return False 
                 
             self.core_dict[f"C{j}"]["Tasks"].append(T[i])
             self.core_dict[f"C{j}"]['u'] += T[i].u
@@ -153,8 +155,8 @@ class Processor:
                     break
                 j += 1
                 
-            if j > self.core_count:
-                return False
+                if j > self.core_count:
+                    return False
                 
             self.core_dict[f"C{j}"]["Tasks"].append(T[i])
             self.core_dict[f"C{j}"]['u'] += T[i].u
@@ -288,6 +290,8 @@ class Processor:
                 self.core_dict[f"C{j}"]['u'] += T[i].u
                 self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
             else:
+                if j + 1  > self.core_count:
+                    return False
                 self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
                 j += 1
             
