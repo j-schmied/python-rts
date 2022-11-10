@@ -40,7 +40,8 @@ class Processor:
         Returns current partitioning table for processor
         """
         return self.core_dict
-        
+    
+    # Partitioning procedures    
     def rmnf(self, T) -> bool:
         """
         Rate Monotonous Next Fit Scheduling.
@@ -332,3 +333,138 @@ class Processor:
         """
         self.reset()
         return True
+
+    # Global procedures
+    def adaptive_tkc(self, T) -> bool:
+        """
+        Adaptive TkC
+        
+        Parameters:
+        
+            T: TaskSet -> task set that should be scheduled
+            
+        Returns:
+        
+            bool -> True if scheduling was successful
+        """
+        self.reset()
+        
+        m = self.core_count
+        
+        for task in T.taskset:
+            task.pke = (m-1*numpy.sqrt(5*m**2-6*m+1)/(2*m))
+            
+        T = T.sort('pke')
+        
+        Us = ((2*m)/(3*m-1+numpy.sqrt(5*m**2-6*m+1)))
+        
+        return T.u < Us
+    
+    def rmus(self, T) -> bool:
+        """
+        Rate Monotonic Utilization Separation
+        
+        Parameters:
+        
+            T: TaskSet -> task set that should be scheduled
+            
+        Returns:
+        
+            bool -> True if scheduling was successful
+        """
+        self.reset()
+        
+        m = self.core_count
+        umax = (m**2)/(3*m-2)
+        us = m/(3*m-2)
+        
+        T = T.sort('p')
+        
+        high_prio = [task for task in T.taskset if task.u > umax]
+        low_prio = [task for task in T.taskset if task.u <= umax]
+        
+        print(f"High Priority Tasks: {high_prio}")
+        print(f"Low Priority Tasks: {low_prio}")
+        
+        return T.u < umax
+    
+    def global_edf(self, T) -> bool:
+        """
+        Global Earliest Deadline First
+        
+        Parameters:
+        
+            T: TaskSet -> task set that should be scheduled
+            
+        Returns:
+        
+            bool -> True if scheduling was successful
+        """
+        self.reset()
+        
+        m = self.core_count
+        T = T.sort('u')
+        
+        umax = T.taskset[-1].u
+
+        u = umax + m * (1 - umax)
+        
+        print(f"u = {u}, Tu = {T.u}")
+        
+        return T.u < u
+    
+    def edfus(self, T) -> bool:
+        """
+        Earliest Deadline First Utilization Separation
+        
+        Parameters:
+        
+            T: TaskSet -> task set that should be scheduled
+            
+        Returns:
+        
+            bool -> True if scheduling was successful
+        """
+        self.reset()
+
+        m = self.core_count
+        umax = (m**2)/(2*m-1)
+        us = m/(2*m-1)
+        
+        T = T.sort('p')
+        
+        high_prio = [task for task in T.taskset if task.u > us]
+        low_prio = [task for task in T.taskset if task.u <= us]
+        
+        print(f"High Priority Tasks: {high_prio}")
+        print(f"Low Priority Tasks: {low_prio}")
+        
+        return T.u < umax
+    
+    def fpedf(self, T) -> bool:
+        """
+        First Priority Earliest Deadline First
+        
+        Parameters:
+        
+            T: TaskSet -> task set that should be scheduled
+            
+        Returns:
+        
+            bool -> True if scheduling was successful
+        """
+        self.reset()
+        
+        m = self.core_count
+        umax = (m - 1)/2
+        
+        T = T.sort('u')
+        alpha = T.taskset[-1].u
+
+        high_prio = [task for task in T.taskset if task.u > 0.5]
+        low_prio = [task for task in T.taskset if task.u <= 0.5]
+
+        print(f"High Priority Tasks: {high_prio}")
+        print(f"Low Priority Tasks: {low_prio}")
+        
+        return alpha <= 0.5 or T.u <= umax
