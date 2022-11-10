@@ -57,6 +57,7 @@ class Processor:
         
         i = 0  # Taskindex
         j = 1  # Processorindex
+        T = T.sort('p')
         n = len(T)
         T = T.taskset
         
@@ -272,6 +273,26 @@ class Processor:
             bool -> True if scheduling was successful
         """
         self.reset()
+        
+        i = 0  # Taskindex
+        j = 1  # Processorindex
+        n = len(T)
+        T = T.taskset
+        
+        while i < n:
+            if j > self.core_count:
+                return False
+            
+            if self.core_dict[f"C{j}"]['u'] + (T[i].u) < 1:
+                self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+                self.core_dict[f"C{j}"]['u'] += T[i].u
+                self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+            else:
+                self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
+                j += 1
+            
+            i += 1
+            
         return True
     
     def edfff(self, T) -> bool:
