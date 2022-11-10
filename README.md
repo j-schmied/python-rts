@@ -27,23 +27,25 @@ For Rate Monotonus Scheduling (RMS):
     * Rate Monotonous First Fit
     * Rate Monotonous First Fit with Decreasing Utilization
     * Rate Monotonous Small Task
-    * Rate Monotonous General Task
-    * Rate Monotonous Best Fit
-    * Rate Monotonous Worst Fit
+    * Rate Monotonous General Task (TbA)
+    * Rate Monotonous Best Fit (TbA)
+    * Rate Monotonous Worst Fit (TbA)
 
 For Earliest Deadline First Scheduling (EDF):
 
 * Scheduling Tests:
     * u < 1 Test 
 * Partitioning Procedures:
-    * Earliest Deadline First Next Fit
-    * Earliest Deadline First First Fit
-    * Earliest Deadline First Best Fit
+    * Earliest Deadline First Next Fit (TbA)
+    * Earliest Deadline First First Fit (TbA)
+    * Earliest Deadline First Best Fit (TbA)
 
 ## Usage
 
 * Install: `pip install git+https://github.com/j-schmied/python-rts.git`
-* Usage: see `rts.ipynb` (Note: Notebook also uses `pandas` and `plotly`)
+* Usage:
+   * `rts.ipynb` (Note: Notebook also uses `pandas` and `plotly`)
+   * `rts.py` -> adapt task set on top and run script
 
 ## Sources
 
