@@ -26,7 +26,8 @@ class Processor:
         for i in range(cc):
             self.core_dict[f"C{i+1}"] = dict()
             self.core_dict[f"C{i+1}"]["u"] = 0
-            self.core_dict[f"C{i+1}"]["urm"] = 1
+            self.core_dict[f"C{i+1}"]["u_max"] = 1
+            self.core_dict[f"C{i+1}"]["u_rel"] = 0
             self.core_dict[f"C{i+1}"]["Tasks"] = list()
             
     def reset(self):
@@ -71,13 +72,15 @@ class Processor:
             if self.core_dict[f"C{j}"]['u'] + (T[i].u) < t_urm:
                 self.core_dict[f"C{j}"]["Tasks"].append(T[i])
                 self.core_dict[f"C{j}"]['u'] += T[i].u
-                self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
             else:
                 if j + 1 > self.core_count:
                     return False
                 self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
                 self.core_dict[f"C{j+1}"]['u'] += T[i].u
-                self.core_dict[f"C{j+1}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j+1}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
                 j += 1
             
             i += 1
@@ -116,7 +119,8 @@ class Processor:
                 
             self.core_dict[f"C{j}"]["Tasks"].append(T[i])
             self.core_dict[f"C{j}"]['u'] += T[i].u
-            self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+            self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+            self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
             
             if j > N:
                 N = j
@@ -162,7 +166,8 @@ class Processor:
                 
             self.core_dict[f"C{j}"]["Tasks"].append(T[i])
             self.core_dict[f"C{j}"]['u'] += T[i].u
-            self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+            self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+            self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
             
             if j > N:
                 N = j
@@ -216,7 +221,8 @@ class Processor:
                 if T[i].u + self.core_dict[f"C{j}"]['u'] <= numpy.max([numpy.log(2), 1 - zeta*numpy.log(2)]):
                     self.core_dict[f"C{j}"]["Tasks"].append(T[i])
                     self.core_dict[f"C{j}"]['u'] += T[i].u
-                    self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                    self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                    self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
                     tasks_planned += 1
                     continue
 
@@ -303,13 +309,15 @@ class Processor:
             if self.core_dict[f"C{j}"]['u'] + (T[i].u) < 1:
                 self.core_dict[f"C{j}"]["Tasks"].append(T[i])
                 self.core_dict[f"C{j}"]['u'] += T[i].u
-                self.core_dict[f"C{j}"]["urm"] = 1
+                self.core_dict[f"C{j}"]["u_max"] = 1
+                self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
             else:
                 if j + 1  > self.core_count:
                     return False
                 self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
                 self.core_dict[f"C{j+1}"]['u'] += T[i].u
-                self.core_dict[f"C{j+1}"]["urm"] = 1
+                self.core_dict[f"C{j+1}"]["u_max"] = 1
+                self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
                 j += 1
             
             i += 1
@@ -346,7 +354,8 @@ class Processor:
 
             self.core_dict[f"C{j}"]["Tasks"].append(T[i])
             self.core_dict[f"C{j}"]['u'] += T[i].u
-            self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+            self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+            self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
 
             if j > N:
                 N = j
