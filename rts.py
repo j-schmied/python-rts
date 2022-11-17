@@ -45,7 +45,7 @@ def main():
     print(line)
     print("[RMS] SR-Test")
     srt_df = pd.DataFrame(T.sr_test()).T
-    success = len(np.where(srt_df["u < 1"].isin(["True", True]))) > 0
+    success = len(np.where(srt_df["u < 1"].isin(["True", True]))[0]) > 0
     print(srt_df)
     print(stest(success))
     print(line)
