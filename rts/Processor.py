@@ -190,6 +190,7 @@ class Processor:
         T = T.sort(key="xi")
         n = len(T)
         T = T.taskset
+        tasks_planned = 0
         
         while i+1 < n:
             j += 1
@@ -199,6 +200,7 @@ class Processor:
             
             self.core_dict[f"C{j}"]["Tasks"].append(T[i])
             self.core_dict[f"C{j}"]['u'] += T[i].u
+            tasks_planned += 1
             zeta = 0
             xmin = T[i].xi
             ex = 0
@@ -211,9 +213,13 @@ class Processor:
                     self.core_dict[f"C{j}"]["Tasks"].append(T[i])
                     self.core_dict[f"C{j}"]['u'] += T[i].u
                     self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                    tasks_planned += 1
                     continue
-                
+
                 ex = 1
+        
+        if tasks_planned != n:
+            return False
         
         return True
     
@@ -231,6 +237,7 @@ class Processor:
         
             bool -> True if scheduling was successful
         """
+        # TODO
         self.reset()
         return True
     
@@ -246,6 +253,7 @@ class Processor:
         
             bool -> True if scheduling was successful
         """
+        # TODO
         self.reset()
         return True
     
@@ -261,6 +269,7 @@ class Processor:
         
             bool -> True if scheduling was successful
         """
+        # TODO
         self.reset()
         return True
     
@@ -354,6 +363,7 @@ class Processor:
         
             bool -> True if scheduling was successful
         """
+        # TODO
         self.reset()
         return True
 
