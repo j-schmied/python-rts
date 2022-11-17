@@ -202,11 +202,15 @@ class Processor:
             self.core_dict[f"C{j}"]['u'] += T[i].u
             tasks_planned += 1
             zeta = 0
-            xmin = T[i].xi
+            xmin = T[0].xi
             ex = 0
             
-            while ex != 1 and i+1 < n:
+            while ex != 1:
                 i += 1
+                
+                if i >= n:
+                    break
+                
                 zeta = T[i].xi - xmin
                 
                 if T[i].u + self.core_dict[f"C{j}"]['u'] <= numpy.max([numpy.log(2), 1 - zeta*numpy.log(2)]):
@@ -299,13 +303,13 @@ class Processor:
             if self.core_dict[f"C{j}"]['u'] + (T[i].u) < 1:
                 self.core_dict[f"C{j}"]["Tasks"].append(T[i])
                 self.core_dict[f"C{j}"]['u'] += T[i].u
-                self.core_dict[f"C{j}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j}"]["urm"] = 1
             else:
                 if j + 1  > self.core_count:
                     return False
                 self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
                 self.core_dict[f"C{j+1}"]['u'] += T[i].u
-                self.core_dict[f"C{j+1}"]["urm"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j+1}"]["urm"] = 1
                 j += 1
             
             i += 1
