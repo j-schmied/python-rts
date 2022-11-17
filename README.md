@@ -2,7 +2,7 @@
 
 This library provides various functions for real time systems related calculations.
 
-NOTE: currently under development. Not all functions are implemented yet. PR's/improvements welcome!
+NOTE: currently under development. Not all functions are implemented yet. PR's/improvements welcome! Also, this library is limited to periodic tasks and is not planned to be extended furthermore in the future. Feel free to fork and extend on your own!
 
 ## Content
 
