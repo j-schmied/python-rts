@@ -40,7 +40,7 @@ For Earliest Deadline First Scheduling (EDF):
   * u < 1 Test
 * Partitioning Procedures:
   * EDF Next Fit
-  * EDF First Fit (TbA)
+  * EDF First Fit
   * EDF Best Fit (TbA)
 * Global Procedures:
   * Global EDF
