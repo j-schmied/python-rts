@@ -401,16 +401,21 @@ class Processor:
         self.reset()
         
         m = self.core_count
-        umax = (m**2)/(3*m-2)
+        umax = (numpy.power(m, 2))/(3*m - 2)
         us = m/(3*m-2)
         
         T = T.sort('p')
         
-        high_prio = [task for task in T.taskset if task.u > umax]
-        low_prio = [task for task in T.taskset if task.u <= umax]
+        print(f"Task set ordered by p: {T}")
+        
+        high_prio = [task for task in T.taskset if task.u > us]
+        low_prio = [task for task in T.taskset if task.u <= us]
         
         print(f"High Priority Tasks: {high_prio}")
         print(f"Low Priority Tasks: {low_prio}")
+
+        print(f"Max. schedulable utilization = {umax}")
+        print(f"Task set utilization = {T.u}")
         
         return T.u < umax
     
