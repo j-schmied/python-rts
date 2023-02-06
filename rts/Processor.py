@@ -69,24 +69,22 @@ class Processor:
             
             t_urm = (len(self.core_dict[f"C{j}"]["Tasks"])+1) * (numpy.power(2, 1/(len(self.core_dict[f"C{j}"]["Tasks"])+1)) - 1) 
             
-            try: 
-                if self.core_dict[f"C{j}"]['u'] + (T[i].u) < t_urm:
-                    self.core_dict[f"C{j}"]["Tasks"].append(T[i])
-                    self.core_dict[f"C{j}"]['u'] += T[i].u
-                    self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
-                    self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
-                else:
-                    if j + 1 > self.core_count:
-                        return False
-                    self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
-                    self.core_dict[f"C{j+1}"]['u'] += T[i].u
-                    self.core_dict[f"C{j+1}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
-                    self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
-                    j += 1
+            
+            if self.core_dict[f"C{j}"]['u'] + (T[i].u) < t_urm:
+                self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+                self.core_dict[f"C{j}"]['u'] += T[i].u
+                self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
+            else:
+                if j + 1 > self.core_count:
+                    return False
+                self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
+                self.core_dict[f"C{j+1}"]['u'] += T[i].u
+                self.core_dict[f"C{j+1}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
+                j += 1
                 
-                i += 1
-            except ZeroDivisionError:
-                return False
+            i += 1
             
         return True
     
@@ -428,8 +426,10 @@ class Processor:
         self.reset()
         
         m = self.core_count
-        umax = (numpy.power(m, 2))/(3*m - 2)
+        umax = numpy.power(m, 2)/(3*m - 2)
         us = m/(3*m-2)
+
+        print(f"Separation Value = {us}")
         
         T = T.sort('p')
         
@@ -514,7 +514,7 @@ class Processor:
         self.reset()
         
         m = self.core_count
-        umax = (m - 1)/2
+        umax = (m + 1)/2
         
         T = T.sort('u')
         alpha = T.taskset[-1].u
@@ -525,4 +525,4 @@ class Processor:
         print(f"High Priority Tasks: {high_prio}")
         print(f"Low Priority Tasks: {low_prio}")
         
-        return alpha <= 0.5 or T.u <= umax
+        return alpha <= 0.5 and T.u <= umax
