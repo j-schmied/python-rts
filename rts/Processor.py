@@ -42,6 +42,13 @@ class Processor:
         """
         return self.core_dict
     
+    def get_necessary_cores_count(self):
+        N = 0
+        for i in range(self.core_count):
+            if len(self.core_dict[f"C{i+1}"]["Tasks"]) != 0:
+                N += 1
+        return N
+    
     # Partitioning procedures    
     def rmnf(self, T) -> bool:
         """
@@ -86,6 +93,8 @@ class Processor:
                 
             i += 1
             
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+            
         return True
     
     def rmff(self, T) -> bool:
@@ -127,8 +136,10 @@ class Processor:
             if j > N:
                 N = j
             
-            i += 1 
-            
+            i += 1
+
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return True
     
     def rmffdu(self, T) -> bool:
@@ -176,6 +187,8 @@ class Processor:
                 
             i += 1 
         
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return True
     
     def rmst(self, T) -> bool:
@@ -230,6 +243,8 @@ class Processor:
 
                 ex = 1
         
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         if tasks_planned != n:
             return False
         
@@ -251,6 +266,7 @@ class Processor:
         """
         # TODO
         self.reset()
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
         return True
     
     def rmbf(self, T) -> bool:
@@ -267,6 +283,7 @@ class Processor:
         """
         # TODO
         self.reset()
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
         return True
     
     def rmwf(self, T) -> bool:
@@ -283,6 +300,7 @@ class Processor:
         """
         # TODO
         self.reset()
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
         return True
     
     def edfnf(self, T) -> bool:
@@ -324,6 +342,8 @@ class Processor:
             
             i += 1
             
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return True
     
     def edfff(self, T) -> bool:
@@ -364,6 +384,8 @@ class Processor:
 
             i += 1
 
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return True
     
     def edfbf(self, T) -> bool:
@@ -380,6 +402,7 @@ class Processor:
         """
         # TODO
         self.reset()
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
         return True
 
     # Global procedures
@@ -409,6 +432,8 @@ class Processor:
         print(f"Task set ordered by k = {T}")
         print(f"Us = {Us}")
         
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return T.u < Us
     
     def rmus(self, T) -> bool:
@@ -444,6 +469,8 @@ class Processor:
         print(f"Max. schedulable utilization = {umax}")
         print(f"Task set utilization = {T.u}")
         
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return T.u < umax
     
     def global_edf(self, T) -> bool:
@@ -469,6 +496,8 @@ class Processor:
         
         print(f"u = {u}, Tu = {T.u}")
         
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return T.u < u
     
     def edfus(self, T) -> bool:
@@ -497,6 +526,8 @@ class Processor:
         print(f"High Priority Tasks: {high_prio}")
         print(f"Low Priority Tasks: {low_prio}")
         
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return T.u < umax
     
     def fpedf(self, T) -> bool:
@@ -525,4 +556,6 @@ class Processor:
         print(f"High Priority Tasks: {high_prio}")
         print(f"Low Priority Tasks: {low_prio}")
         
+        print(f"Cores Necessary (N): {self.get_necessary_cores_count()}")
+
         return alpha <= 0.5 and T.u <= umax
