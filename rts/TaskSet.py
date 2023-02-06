@@ -40,18 +40,18 @@ class TaskSet:
         return t_pmin
 
     def is_simple_periodic(self) -> bool:
-        T = self
-        T = T.sort(key="p")
-        T = T.taskset
+        # T = self
+        # T = T.sort(key="p")
+        # T = T.taskset
 
-        factor = T[1].p / T[0].p
+        # factor = T[1].p / T[0].p
 
-        for i in range(1, len(T)):
-            f = T[i-1].p * factor
-            if f != T[i].p:
-                return False
+        # for i in range(1, len(T)):
+        #     f = T[i-1].p * factor
+        #     if f != T[i].p:
+        #         return False
 
-        return True
+        return self.zeta == 0
 
     def sort(self, key: str, desc: bool = False):
         """
@@ -104,6 +104,23 @@ class TaskSet:
         print(f"uRM\t= {round(self.urm, 4)}")
 
         return True if u <= self.urm else False
+    
+    def km_test(self, ll: bool = True, hb: bool = False) -> bool:
+        """
+        Kuo-Mok-Test
+        
+        Using Liu-Layland-Test by default, alternatively using Hyperbolic Bound
+        
+        Parameters:
+            T: TaskSet  -> task set [Task(p: float, e: float), ...]
+            ll: bool    -> use Liu-Layland-Test, True by default
+            hb: bool    -> use Hyperbolic Bound, False by default
+            
+        Returns:
+            bool        -> True if test succeeds
+        """
+        pass
+        
 
     def rma_test(self) -> bool:
         """
@@ -184,7 +201,7 @@ class TaskSet:
 
     def sr_test(self, stop: bool = False):
         """
-        Test for Distant-Constrained Tasks.
+        Han-Tyan-Test for Distant-Constrained Tasks.
 
         Goal:
 

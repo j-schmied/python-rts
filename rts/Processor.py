@@ -45,7 +45,7 @@ class Processor:
     # Partitioning procedures    
     def rmnf(self, T) -> bool:
         """
-        Rate Monotonous Next Fit Scheduling.
+        Rate Monotonous Next Fit Scheduling using Liu-Layland-Test.
         
         Parameters:
         
@@ -69,27 +69,30 @@ class Processor:
             
             t_urm = (len(self.core_dict[f"C{j}"]["Tasks"])+1) * (numpy.power(2, 1/(len(self.core_dict[f"C{j}"]["Tasks"])+1)) - 1) 
             
-            if self.core_dict[f"C{j}"]['u'] + (T[i].u) < t_urm:
-                self.core_dict[f"C{j}"]["Tasks"].append(T[i])
-                self.core_dict[f"C{j}"]['u'] += T[i].u
-                self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
-                self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
-            else:
-                if j + 1 > self.core_count:
-                    return False
-                self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
-                self.core_dict[f"C{j+1}"]['u'] += T[i].u
-                self.core_dict[f"C{j+1}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
-                self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
-                j += 1
-            
-            i += 1
+            try: 
+                if self.core_dict[f"C{j}"]['u'] + (T[i].u) < t_urm:
+                    self.core_dict[f"C{j}"]["Tasks"].append(T[i])
+                    self.core_dict[f"C{j}"]['u'] += T[i].u
+                    self.core_dict[f"C{j}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                    self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
+                else:
+                    if j + 1 > self.core_count:
+                        return False
+                    self.core_dict[f"C{j+1}"]["Tasks"].append(T[i])
+                    self.core_dict[f"C{j+1}"]['u'] += T[i].u
+                    self.core_dict[f"C{j+1}"]["u_max"] = len(self.core_dict[f"C{j}"]["Tasks"]) * (numpy.power(2, 1/len(self.core_dict[f"C{j}"]["Tasks"])) - 1)
+                    self.core_dict[f"C{j}"]["u_rel"] = self.core_dict[f"C{j}"]["u"] / self.core_dict[f"C{j}"]['u_max']
+                    j += 1
+                
+                i += 1
+            except ZeroDivisionError:
+                return False
             
         return True
     
     def rmff(self, T) -> bool:
         """
-        Rate Monotonous First Fit Scheduling.
+        Rate Monotonous First Fit Scheduling using Liu-Layland-Test.
         
         Parameters:
         
@@ -103,6 +106,7 @@ class Processor:
         
         N = 1
         i = 0
+        T = T.sort('p')
         n = len(T)
         T = T.taskset
         
@@ -131,7 +135,7 @@ class Processor:
     
     def rmffdu(self, T) -> bool:
         """
-        Rate Monotonous First Fit with Decreasing Utilizations Scheduling
+        Rate Monotonous First Fit with Decreasing Utilizations Scheduling using Hyperbolic Bound.
         
         Parameters:
         
@@ -145,7 +149,7 @@ class Processor:
         
         i = 0  # Taskindex
         N = 1  # Processor count
-        T = T.sort(key='u', desc=False)
+        T = T.sort(key='u', desc=True)
         n = len(T)
         T = T.taskset
         
